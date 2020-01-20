@@ -4,28 +4,28 @@ using UnityEngine;
 
 public class MissileSpawner : MonoBehaviour
 {
+    private MissileSpawnerController missileSpawnerController = null;
     [SerializeField] private float stateSwitchDelay = 3f;
+    [SerializeField] private float initialSpawnDelay = 1f;
 
     [SerializeField]
     private enum MissileSpawnState
     {
         Rapidfire,
         Wave,
+        Stats,
         COUNT
     }
 
     [Header("Rapidfire")]
-    [SerializeField] private Vector2 missileSpawnRapidfireMinMax = new Vector2(1, 16);
-    [SerializeField] private float missileSpawnAmountRapidfire = 4;
-    [SerializeField] private float initialSpawnDelay = 1f;
-    [SerializeField] private float rapidfireDelayCountermeasure = 0.25f;
+    private float spawnAmountRapidfire = 4;
+    private float rapidfireDelay = 0.25f;
 
     [Header("Wave")]
-    [SerializeField] private Vector2 missileSpawnWaveMinMax = new Vector2(1, 4);
-    [SerializeField] private float missileSpawnAmountWave = 2;
-    [SerializeField] private float waveDelay = 3f;
-    [SerializeField] private int waveTotal = 5;
-    [SerializeField] private int waveIndex = 0;
+    private float spawnAmountPerWave = 2;
+    private float waveDelay = 3f;
+    private float waveAmount = 5;
+    private int waveIndex = 0;
 
     MissileSpawnState currentSpawnState = MissileSpawnState.Rapidfire;
 
@@ -33,10 +33,10 @@ public class MissileSpawner : MonoBehaviour
     {
         NextSpawnState();
     }
-    private void FixedUpdate()
+
+    private void Awake()
     {
-        Debug.Log("Current number of missiles per rapidfire: " + MissileSpawnAmountRapidfire() + ".");
-        Debug.Log("Current number of missiles per wave: " + MissileSpawnAmountWave() + ".");
+        missileSpawnerController = GameObject.FindObjectOfType<MissileSpawnerController>();    
     }
 
     private void NextSpawnState()
@@ -63,10 +63,7 @@ public class MissileSpawner : MonoBehaviour
         Debug.Log(currentSpawnState.ToString());
         yield return new WaitForSeconds(initialSpawnDelay);
 
-        // Delays missiles in-between spawns.
-        float rapidfireDelay = rapidfireDelayCountermeasure / missileSpawnAmountRapidfire;
-
-        for (int missileSpawnIndex = 0; missileSpawnIndex < missileSpawnAmountRapidfire; missileSpawnIndex++)
+        for (int missileSpawnIndex = 0; missileSpawnIndex < spawnAmountRapidfire; missileSpawnIndex++)
         {
             // Gets missile instance from object pool and positions it on the spawner gameobject.
             GameObject missileInstance = MissilePool.Instance.GetFromPool();
@@ -85,10 +82,10 @@ public class MissileSpawner : MonoBehaviour
         Debug.Log(currentSpawnState.ToString());
         yield return new WaitForSeconds(initialSpawnDelay);
 
-        for (int i = 0; i < waveTotal; i++)
+        for (int i = 0; i < waveAmount; i++)
         {
             waveIndex++;
-            for (int j = 0; j < missileSpawnAmountWave; j++)
+            for (int j = 0; j < spawnAmountPerWave; j++)
             {
                 // Gets missile instance from object pool and positions it on the spawner gameobject.
                 GameObject missileInstance = MissilePool.Instance.GetFromPool();
@@ -99,7 +96,7 @@ public class MissileSpawner : MonoBehaviour
             yield return new WaitForSeconds(waveDelay);
         }
 
-        if (waveIndex == waveTotal)
+        if (waveIndex == waveAmount)
         {
             // Reset wave counter for next iteration.  
             waveIndex = 0;
@@ -109,15 +106,23 @@ public class MissileSpawner : MonoBehaviour
             NextSpawnState();
         }
     }
-    private float MissileSpawnAmountRapidfire()
+
+    IEnumerator StatsState()
     {
-        missileSpawnAmountRapidfire = Mathf.RoundToInt(Mathf.Lerp(missileSpawnRapidfireMinMax.x, missileSpawnRapidfireMinMax.y, Difficulty.GetDifficultyPercent()));
-        return missileSpawnAmountRapidfire;
+        spawnAmountRapidfire = missileSpawnerController.RapidfireSpawnAmount();
+        rapidfireDelay = missileSpawnerController.RapidfireSpawnAmount();
+
+        spawnAmountPerWave = missileSpawnerController.SpawnAmountPerWave();
+        waveDelay = missileSpawnerController.WaveDelay();
+        waveAmount = missileSpawnerController.WaveAmount();
+
+        yield return null;
+        NextSpawnState();
     }
-    private float MissileSpawnAmountWave()
+
+    public string SpawnerCurrentState()
     {
-        missileSpawnAmountWave = Mathf.RoundToInt(Mathf.Lerp(missileSpawnWaveMinMax.x, missileSpawnWaveMinMax.y, Difficulty.GetDifficultyPercent()));
-        return missileSpawnAmountWave;
+        return currentSpawnState.ToString();
     }
 
     private Vector3 RandomPointInBox(Vector3 center, Vector3 size)

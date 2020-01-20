@@ -28,13 +28,13 @@ public class MissileController : MonoBehaviour
 
     public float MissileMovementSpeed()
     {
-        missileMovementSpeed = Mathf.Lerp(missileMovementSpeedMinMax.x, missileMovementSpeedMinMax.y, Difficulty.GetDifficultyPercent());
+        missileMovementSpeed = Mathf.Lerp(missileMovementSpeedMinMax.x, missileMovementSpeedMinMax.y, Difficulty.GetMissileDifficultyPercent());
         return missileMovementSpeed;
     }
 
     public float MissileRotationSpeed()
     {
-        missileRotationSpeed = Mathf.Lerp(missileRotationSpeedMinMax.x, missileRotationSpeedMinMax.y, Difficulty.GetDifficultyPercent());
+        missileRotationSpeed = Mathf.Lerp(missileRotationSpeedMinMax.x, missileRotationSpeedMinMax.y, Difficulty.GetMissileDifficultyPercent());
         return missileRotationSpeed;
     }
 

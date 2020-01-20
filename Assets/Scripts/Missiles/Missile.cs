@@ -13,13 +13,8 @@ public class Missile : MonoBehaviour
 
     private void Awake()
     {
-        missileController = FindObjectOfType<MissileController>();
-        
+        missileController = FindObjectOfType<MissileController>();   
         missileRigidbody = GetComponent<Rigidbody2D>();
-    }
-    private void Start()
-    {
-        
     }
 
     private void FixedUpdate()
