@@ -19,7 +19,7 @@ public class Missile : MonoBehaviour
     }
     private void Start()
     {
-        missileTarget = missileController.missileTarget;
+        
     }
 
     private void FixedUpdate()
@@ -51,9 +51,9 @@ public class Missile : MonoBehaviour
 
     private void InitMissile()
     {
-        missileMovementSpeed = missileController.missileMovementSpeed;
-        missileRotationSpeed = missileController.missileRotationSpeed;
-        missileTarget = missileController.missileTarget;
+        missileMovementSpeed = missileController.MissileMovementSpeed();
+        missileRotationSpeed = missileController.MissileRotationSpeed();
+        missileTarget = missileController.MissileTarget();
     }
 
     private void OnDrawGizmos()

@@ -15,22 +15,28 @@ public class MissileSpawner : MonoBehaviour
     }
 
     [Header("Rapidfire")]
-    [SerializeField] private int missileSpawnAmount = 16;
+    [SerializeField] private Vector2 missileSpawnRapidfireMinMax = new Vector2(1, 16);
+    [SerializeField] private float missileSpawnAmountRapidfire = 4;
     [SerializeField] private float initialSpawnDelay = 1f;
     [SerializeField] private float rapidfireDelayCountermeasure = 0.25f;
 
     [Header("Wave")]
-    [SerializeField] private int missilesPerWave = 4;
-    [SerializeField] private float waveDelay = 5f;
-    [SerializeField] private float waveDelayCounter = 0f;
+    [SerializeField] private Vector2 missileSpawnWaveMinMax = new Vector2(1, 4);
+    [SerializeField] private float missileSpawnAmountWave = 2;
+    [SerializeField] private float waveDelay = 3f;
     [SerializeField] private int waveTotal = 5;
     [SerializeField] private int waveIndex = 0;
 
     MissileSpawnState currentSpawnState = MissileSpawnState.Rapidfire;
 
-    private void Start()
+    private void OnEnable()
     {
         NextSpawnState();
+    }
+    private void FixedUpdate()
+    {
+        Debug.Log("Current number of missiles per rapidfire: " + MissileSpawnAmountRapidfire() + ".");
+        Debug.Log("Current number of missiles per wave: " + MissileSpawnAmountWave() + ".");
     }
 
     private void NextSpawnState()
@@ -55,11 +61,12 @@ public class MissileSpawner : MonoBehaviour
     IEnumerator RapidfireState()
     {
         Debug.Log(currentSpawnState.ToString());
-        // Initial spawn delay is required for the object pool to create instances before the spawner activates, prevents null reference exception.
         yield return new WaitForSeconds(initialSpawnDelay);
-        // Scaling delay that delays missiles in-between spawns.
-        float rapidfireDelay = rapidfireDelayCountermeasure / missileSpawnAmount;
-        for (int missileSpawnIndex = 0; missileSpawnIndex < missileSpawnAmount; missileSpawnIndex++)
+
+        // Delays missiles in-between spawns.
+        float rapidfireDelay = rapidfireDelayCountermeasure / missileSpawnAmountRapidfire;
+
+        for (int missileSpawnIndex = 0; missileSpawnIndex < missileSpawnAmountRapidfire; missileSpawnIndex++)
         {
             // Gets missile instance from object pool and positions it on the spawner gameobject.
             GameObject missileInstance = MissilePool.Instance.GetFromPool();
@@ -77,27 +84,43 @@ public class MissileSpawner : MonoBehaviour
     {
         Debug.Log(currentSpawnState.ToString());
         yield return new WaitForSeconds(initialSpawnDelay);
+
         for (int i = 0; i < waveTotal; i++)
         {
             waveIndex++;
-            Debug.Log(waveDelayCounter);
-            for (int j = 0; j < missilesPerWave; j++)
+            for (int j = 0; j < missileSpawnAmountWave; j++)
             {
+                // Gets missile instance from object pool and positions it on the spawner gameobject.
                 GameObject missileInstance = MissilePool.Instance.GetFromPool();
                 missileInstance.transform.position = RandomPointInBox(transform.position, transform.localScale);
             }
+
+            // Delay in-between missile waves.
             yield return new WaitForSeconds(waveDelay);
         }
 
         if (waveIndex == waveTotal)
         {
-            yield return new WaitForSeconds(stateSwitchDelay);
+            // Reset wave counter for next iteration.  
             waveIndex = 0;
+
+            // Switch to another state after {n} seconds. 
+            yield return new WaitForSeconds(stateSwitchDelay); 
             NextSpawnState();
         }
     }
+    private float MissileSpawnAmountRapidfire()
+    {
+        missileSpawnAmountRapidfire = Mathf.RoundToInt(Mathf.Lerp(missileSpawnRapidfireMinMax.x, missileSpawnRapidfireMinMax.y, Difficulty.GetDifficultyPercent()));
+        return missileSpawnAmountRapidfire;
+    }
+    private float MissileSpawnAmountWave()
+    {
+        missileSpawnAmountWave = Mathf.RoundToInt(Mathf.Lerp(missileSpawnWaveMinMax.x, missileSpawnWaveMinMax.y, Difficulty.GetDifficultyPercent()));
+        return missileSpawnAmountWave;
+    }
 
-    public static Vector3 RandomPointInBox(Vector3 center, Vector3 size)
+    private Vector3 RandomPointInBox(Vector3 center, Vector3 size)
     {
         return center + new Vector3
             (
