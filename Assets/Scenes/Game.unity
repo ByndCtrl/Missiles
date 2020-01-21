@@ -171,7 +171,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 75
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_ZDamping: 0.125
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 50
+  m_CameraDistance: 75
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -463,6 +463,61 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d7886f044ad90c4c967fe008cb10f36, type: 3}
+--- !u!1 &1877718006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1877718008}
+  - component: {fileID: 1877718007}
+  m_Layer: 0
+  m_Name: MissileSpawnerController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1877718007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877718006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a485a4fa1fe6ba547921bb9abd85ab1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amountOfSpawners: 5
+  missileSpawnerPrefab: {fileID: 8177702549557164966, guid: 7b6c92d7a03afb14f87c72c246264f05,
+    type: 3}
+  radius: 200
+  xScale: 20
+  yScale: 20
+  zScale: 0
+  spawnAmountRapidfireMinMax: {x: 1, y: 16}
+  rapidfireDelayMinMax: {x: 1, y: 0.16}
+  spawnAmountPerWaveMinMax: {x: 1, y: 4}
+  waveAmountMinMax: {x: 1, y: 4}
+  waveDelayMinMax: {x: 4, y: 1}
+--- !u!4 &1877718008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877718006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &2138677392 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 1367795275349682337, guid: f94fc29520bf91d4da52d9aae0b3fb59,
@@ -545,6 +600,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2057256450506625184, guid: 4c7cc0b805409024db0cc476e9b74fd6,
+        type: 3}
+      propertyPath: field of view
+      value: 75
+      objectReference: {fileID: 0}
     - target: {fileID: 2057256450506625185, guid: 4c7cc0b805409024db0cc476e9b74fd6,
         type: 3}
       propertyPath: m_LocalPosition.x

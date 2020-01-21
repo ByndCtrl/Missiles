@@ -5,7 +5,7 @@ using UnityEngine;
 public class MissileController : MonoBehaviour
 {
     private Vector2 missileMovementSpeedMinMax = new Vector2(75f, 150f);
-    private Vector2 missileRotationSpeedMinMax = new Vector2(25f, 100f);
+    private Vector2 missileRotationSpeedMinMax = new Vector2(50f, 100f);
 
     private float missileMovementSpeed = 50f;
     private float missileRotationSpeed = 50f;
@@ -21,9 +21,9 @@ public class MissileController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log("Active Missiles: " + activeMissiles.Count + ".");
-        Debug.Log("Current missile movement speed: " + MissileMovementSpeed() + ".");
-        Debug.Log("Current missile rotation speed: " + MissileRotationSpeed() + ".");
+        //Debug.Log("Active Missiles: " + activeMissiles.Count + ".");
+        //Debug.Log("Current missile movement speed: " + MissileMovementSpeed() + ".");
+        //Debug.Log("Current missile rotation speed: " + MissileRotationSpeed() + ".");
     }
 
     public float MissileMovementSpeed()
@@ -41,5 +41,13 @@ public class MissileController : MonoBehaviour
     public Transform MissileTarget()
     {
         return missileTarget;
+    }
+
+    public void DestroyAllMissiles()
+    {
+        for (int i = 0; i < activeMissiles.Count; i++)
+        {
+            MissilePool.Instance.AddToPool(activeMissiles[i].gameObject);
+        }
     }
 }
