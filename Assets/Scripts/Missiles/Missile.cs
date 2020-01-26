@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.VFX; // Experimental
 
 public class Missile : MonoBehaviour
 {
@@ -11,10 +12,16 @@ public class Missile : MonoBehaviour
     private float missileMovementSpeed = 25f;
     private float missileRotationSpeed = 25f;
 
+    // Experimental
+    private VisualEffect explosionVFX = null;
+
     private void Awake()
     {
         missileController = FindObjectOfType<MissileController>();   
         missileRigidbody = GetComponent<Rigidbody2D>();
+
+        // Experimental
+        explosionVFX = GetComponent<VisualEffect>();
     }
 
     private void FixedUpdate()
@@ -49,6 +56,16 @@ public class Missile : MonoBehaviour
         missileMovementSpeed = missileController.MissileMovementSpeed();
         missileRotationSpeed = missileController.MissileRotationSpeed();
         missileTarget = missileController.MissileTarget();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            explosionVFX.Play();
+            Debug.Log("Hit Player, playing explosionVFX.");
+            CameraShake.CameraImpulse(0.25f);
+        }
     }
 
     private void OnDrawGizmos()
