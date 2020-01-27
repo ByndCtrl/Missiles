@@ -20,6 +20,7 @@ public class MissilePool : MonoBehaviour
         {
             var instancesToAdd = Instantiate(missilePrefab) as GameObject;
             instancesToAdd.transform.SetParent(transform);
+            instancesToAdd.gameObject.SetActive(false);
             AddToPool(instancesToAdd);
         }
     }
@@ -36,7 +37,6 @@ public class MissilePool : MonoBehaviour
 
     public void AddToPool(GameObject Instance)
     {
-        Instance.SetActive(false);
         availableObjects.Enqueue(Instance);
     }
 }

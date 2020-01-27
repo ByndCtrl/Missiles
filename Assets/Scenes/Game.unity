@@ -325,7 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 2
+  m_AmplitudeGain: 0
   m_FrequencyGain: 0.5
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1001 &1145790471
@@ -698,6 +698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4bb645a5f3d6d44685bbd6d6ddf81f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missileMovementSpeedMinMax: {x: 75, y: 150}
+  missileRotationSpeedMinMax: {x: 75, y: 150}
   activeMissiles: []
 --- !u!114 &1815504353
 MonoBehaviour:
@@ -725,17 +727,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a485a4fa1fe6ba547921bb9abd85ab1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfSpawners: 3
+  amountOfSpawners: 8
   missileSpawnerPrefab: {fileID: 6673132905108591734, guid: 94c5993449cec8e488a4ef9957b9fb38,
     type: 3}
-  radius: 200
+  radius: 175
   xScale: 50
   yScale: 50
   zScale: 0
-  spawnAmountRapidfireMinMax: {x: 1, y: 16}
+  spawnAmountRapidfireMinMax: {x: 4, y: 16}
   rapidfireDelayMinMax: {x: 1, y: 0.16}
-  spawnAmountPerWaveMinMax: {x: 1, y: 4}
-  waveAmountMinMax: {x: 1, y: 4}
+  spawnAmountPerWaveMinMax: {x: 2, y: 8}
+  waveAmountMinMax: {x: 2, y: 4}
   waveDelayMinMax: {x: 4, y: 1}
 --- !u!4 &1815504355
 Transform:

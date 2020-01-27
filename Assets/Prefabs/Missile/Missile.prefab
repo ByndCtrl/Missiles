@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5170f1ff0d2ae9e449aec6caf9201f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missileModel: {fileID: 8483100912533896159}
 --- !u!73398921 &3541231405879362960
 VFXRenderer:
   m_ObjectHideFlags: 0
@@ -197,7 +198,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7385994029628238435}
-  - {fileID: 7109927192665972527}
   m_Father: {fileID: 5438396740941450610}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -293,78 +293,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1001 &7109927192665544081
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 5229085688305161754}
-    m_Modifications:
-    - target: {fileID: 139654, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_Name
-      value: FlamethrowerAdditiveRed
-      objectReference: {fileID: 0}
-    - target: {fileID: 139654, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19824182, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: LightsModule.enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19824182, guid: 066053404d559854a8850fd56b0c728e, type: 3}
-      propertyPath: TrailModule.enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 066053404d559854a8850fd56b0c728e, type: 3}
---- !u!4 &7109927192665972527 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 428734, guid: 066053404d559854a8850fd56b0c728e,
-    type: 3}
-  m_PrefabInstance: {fileID: 7109927192665544081}
-  m_PrefabAsset: {fileID: 0}

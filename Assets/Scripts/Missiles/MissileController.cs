@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class MissileController : MonoBehaviour
 {
-    private Vector2 missileMovementSpeedMinMax = new Vector2(75f, 150f);
-    private Vector2 missileRotationSpeedMinMax = new Vector2(50f, 100f);
+    [Header("Movement")]
+    [SerializeField] private Vector2 missileMovementSpeedMinMax = new Vector2(75f, 150f);
+    [SerializeField] private Vector2 missileRotationSpeedMinMax = new Vector2(50f, 100f);
 
     private float missileMovementSpeed = 50f;
     private float missileRotationSpeed = 50f;
 
     private Transform missileTarget = null;
-    public List<Missile> activeMissiles = null;
+    [HideInInspector] public List<Missile> activeMissiles = null;
 
     private void Awake()
     {
