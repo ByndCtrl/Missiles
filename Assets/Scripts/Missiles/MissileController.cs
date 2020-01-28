@@ -7,9 +7,12 @@ public class MissileController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private Vector2 missileMovementSpeedMinMax = new Vector2(75f, 150f);
     [SerializeField] private Vector2 missileRotationSpeedMinMax = new Vector2(50f, 100f);
-
     private float missileMovementSpeed = 50f;
     private float missileRotationSpeed = 50f;
+
+    [Header("Stats")]
+    [SerializeField] private Vector2 missileDamageMinMax = new Vector2(5, 25);
+    private float missileDamage = 25f;
 
     private Transform missileTarget = null;
     [HideInInspector] public List<Missile> activeMissiles = null;
@@ -37,6 +40,12 @@ public class MissileController : MonoBehaviour
     {
         missileRotationSpeed = Mathf.Lerp(missileRotationSpeedMinMax.x, missileRotationSpeedMinMax.y, Difficulty.GetMissileDifficultyPercent());
         return missileRotationSpeed;
+    }
+
+    public float MissileDamage()
+    {
+        missileDamage = Mathf.Lerp(missileDamageMinMax.x, missileDamageMinMax.y, Difficulty.GetMissileDifficultyPercent());
+        return missileDamage;
     }
 
     public Transform MissileTarget()

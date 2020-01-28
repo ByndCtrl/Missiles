@@ -10,6 +10,7 @@ public class Missile : MonoBehaviour
     private Rigidbody2D missileRigidbody;
     private float missileMovementSpeed = 25f;
     private float missileRotationSpeed = 25f;
+    private float missileDamage = 25f;
 
     private VisualEffect explosionVFX = null;
 
@@ -59,6 +60,7 @@ public class Missile : MonoBehaviour
     {
         missileMovementSpeed = missileController.MissileMovementSpeed();
         missileRotationSpeed = missileController.MissileRotationSpeed();
+        missileDamage = missileController.MissileDamage();
         missileTarget = missileController.MissileTarget();
         StartCoroutine(SelfDestruct(15f));
     }
@@ -68,6 +70,7 @@ public class Missile : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             Debug.Log("Collided with " + other.gameObject.name + ".");
+            other.gameObject.GetComponent<PlayerResources>().TakeDamage(missileDamage);
             StartCoroutine(OnMissileDeath());
         }
     }
@@ -85,6 +88,7 @@ public class Missile : MonoBehaviour
         missileModel.SetActive(false); // Deactive the model only
         missileCollider.enabled = false; // Disable the collider
         yield return new WaitForSeconds(1f); // Wait 1 second for the VFX to play out
+        explosionVFX.Stop();
         gameObject.SetActive(false); // Deactive the entire missile object
         missileModel.SetActive(true); // Activate model before returning to pool
         missileCollider.enabled = true; // Enable collider before returning to pool
