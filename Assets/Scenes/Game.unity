@@ -700,6 +700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missileMovementSpeedMinMax: {x: 75, y: 150}
   missileRotationSpeedMinMax: {x: 75, y: 150}
+  missileDamageMinMax: {x: 5, y: 25}
   activeMissiles: []
 --- !u!114 &1815504353
 MonoBehaviour:
