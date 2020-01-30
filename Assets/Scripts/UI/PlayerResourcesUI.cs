@@ -65,19 +65,19 @@ public class PlayerResourcesUI : MonoBehaviour
 
     void OnHealthChange()
     {
-        healthText.text = "Health: " + playerResources.Health;
+        healthText.text = "Health: " + playerResources.Health + " | " + playerResources.MaxHealth;
         //healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, playerStats.Health / playerStats.MaxHealth, Time.deltaTime * smoothValue);
     }
 
     void OnShieldChange()
     {
-        shieldText.text = "Shield: " + playerResources.Shield;
+        shieldText.text = "Shield: " + playerResources.Shield + " | " + playerResources.MaxShield;
         //shieldBar.fillAmount = Mathf.Lerp(shieldBar.fillAmount, playerStats.Shield / playerStats.MaxShield, Time.deltaTime * smoothValue);
     }
 
     void OnEnergyChange()
     {
-        energyText.text = "Energy: " + playerResources.Energy;
+        energyText.text = "Energy: " + playerResources.Energy + " | " + playerResources.MaxEnergy;
         //energyBar.fillAmount = Mathf.Lerp(energyBar.fillAmount, playerStats.Energy / playerStats.MaxEnergy, Time.deltaTime * smoothValue);
     }
 

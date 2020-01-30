@@ -66,7 +66,7 @@ public class MissileSpawner : MonoBehaviour
         for (int missileSpawnIndex = 0; missileSpawnIndex < spawnAmountRapidfire; missileSpawnIndex++)
         {
             // Gets missile instance from object pool and positions it on the spawner gameobject.
-            GameObject missileInstance = MissilePool.Instance.GetFromPool();
+            GameObject missileInstance = MissilePool.Instance.GetMissileFromPool();
             missileInstance.transform.position = RandomPointInBox(transform.position, transform.localScale);
             // Short delay in-between missile spawns.
             yield return new WaitForSeconds(rapidfireDelay);
@@ -88,7 +88,7 @@ public class MissileSpawner : MonoBehaviour
             for (int j = 0; j < spawnAmountPerWave; j++)
             {
                 // Gets missile instance from object pool and positions it on the spawner gameobject.
-                GameObject missileInstance = MissilePool.Instance.GetFromPool();
+                GameObject missileInstance = MissilePool.Instance.GetMissileFromPool();
                 missileInstance.transform.position = RandomPointInBox(transform.position, transform.localScale);
             }
 

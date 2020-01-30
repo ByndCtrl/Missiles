@@ -12,8 +12,11 @@ public class Missile : MonoBehaviour
     private float missileRotationSpeed = 25f;
     private float missileDamage = 25f;
 
-    private VisualEffect explosionCollisionVFX = null;
-    private VisualEffect explosionSelfDestructVFX = null;
+    private Vector2 selfDestructTimeMinMax = new Vector2(10, 20f);
+    private float selfDestructTime = 0f;
+
+    private GameObject explosionCollisionVFX = null;
+    private GameObject explosionSelfDestructVFX = null;
 
     /// <summary>
     /// missileModel is the 2nd child of the main Missile object, assign the model through prefab inspector
@@ -27,7 +30,12 @@ public class Missile : MonoBehaviour
         missileController = FindObjectOfType<MissileController>();   
         missileRigidbody = GetComponent<Rigidbody2D>();
         missileCollider = GetComponent<BoxCollider2D>();
-        explosionCollisionVFX = null;
+        selfDestructTime = Random.Range(selfDestructTimeMinMax.x, selfDestructTimeMinMax.y);
+    }
+
+    private void Start()
+    {
+        
     }
 
     private void FixedUpdate()
@@ -63,7 +71,7 @@ public class Missile : MonoBehaviour
         missileRotationSpeed = missileController.MissileRotationSpeed();
         missileDamage = missileController.MissileDamage();
         missileTarget = missileController.MissileTarget();
-        StartCoroutine(SelfDestruct(15f));
+        StartCoroutine(SelfDestruct(selfDestructTime));
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -82,34 +90,40 @@ public class Missile : MonoBehaviour
         StartCoroutine(OnMissileSelfDestruct());
     }
 
+    
     private IEnumerator OnMissileCollision()
     {
-        explosionCollisionVFX.Play(); // Play explosion VFX
+        explosionCollisionVFX = MissilePool.Instance.GetVFXCollisionFromPool(); // Get VFX instance from object pool
+        explosionCollisionVFX.transform.position = this.transform.position; // Position VFX instance to the missile object
+        explosionCollisionVFX.transform.localRotation = this.transform.localRotation; // Set rotation of VFX instance to be the same as the missile
+        explosionCollisionVFX.GetComponent<VisualEffect>().Play(); // Play VFX
         CameraShake.CameraImpulse(0.25f); // Camera shake
-        missileModel.SetActive(false); // Deactive the model only
-        missileCollider.enabled = false; // Disable the collider
-        yield return new WaitForSeconds(1f); // Wait 1 second for the VFX to play out
-        explosionCollisionVFX.Stop();
+        missileModel.SetActive(false); // Deactive the missile model
+        missileCollider.enabled = false; // Disable the missile collider
+        yield return new WaitForSeconds(0.75f); // Wait for the VFX to play out
         gameObject.SetActive(false); // Deactive the entire missile object
         missileModel.SetActive(true); // Activate model before returning to pool
         missileCollider.enabled = true; // Enable collider before returning to pool
-        MissilePool.Instance.AddToPool(gameObject); // Return to pool
+        MissilePool.Instance.AddToMissilePool(gameObject); // Return missile to pool
+        MissilePool.Instance.AddToVFXCollisionPool(explosionCollisionVFX); // Return VFX to pool
         yield return null; // Exit
     }
-
     private IEnumerator OnMissileSelfDestruct()
     {
-        //explosionSelfDestructVFX.Play(); // TODO: Create through VFX Graph
-        missileModel.SetActive(false); // Deactive the model only
-        missileCollider.enabled = false; // Disable the collider
-        yield return new WaitForSeconds(1f); // Wait 1 second for the VFX to play out
-        //explosionSelfDestructVFX.Stop(); // TODO: Create through VFX Graph
+        explosionSelfDestructVFX = MissilePool.Instance.GetVFXDestroyFromPool(); // Get VFX instance from object pool
+        explosionSelfDestructVFX.transform.position = this.transform.position; // Position VFX instance to the missile object
+        explosionSelfDestructVFX.GetComponent<VisualEffect>().Play(); // Play VFX
+        missileModel.SetActive(false); // Deactive the missile model
+        missileCollider.enabled = false; // Disable the missile collider
+        yield return new WaitForSeconds(0.75f); // Wait for the VFX to play out
         gameObject.SetActive(false); // Deactive the entire missile object
         missileModel.SetActive(true); // Activate model before returning to pool
         missileCollider.enabled = true; // Enable collider before returning to pool
-        MissilePool.Instance.AddToPool(gameObject); // Return to pool
+        MissilePool.Instance.AddToMissilePool(gameObject); // Return missile to pool
+        MissilePool.Instance.AddToVFXDestroyPool(explosionSelfDestructVFX); // Return VFX to pool
         yield return null; // Exit
     }
+    
 
     private void OnDrawGizmos()
     {

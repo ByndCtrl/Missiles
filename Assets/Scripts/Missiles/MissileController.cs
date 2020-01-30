@@ -57,7 +57,7 @@ public class MissileController : MonoBehaviour
     {
         for (int i = 0; i < activeMissiles.Count; i++)
         {
-            MissilePool.Instance.AddToPool(activeMissiles[i].gameObject);
+            MissilePool.Instance.AddToMissilePool(activeMissiles[i].gameObject);
         }
     }
 }

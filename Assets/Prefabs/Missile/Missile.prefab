@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 5438396740941450610}
   - component: {fileID: 3744913375456131501}
   - component: {fileID: 8136814504137901583}
-  - component: {fileID: 8149927680317532881}
   - component: {fileID: 2402993402779841024}
-  - component: {fileID: 3541231405879362960}
+  - component: {fileID: 5749708861155306441}
+  - component: {fileID: 1685529446717472747}
+  - component: {fileID: 4205004097504768932}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Untagged
@@ -83,7 +84,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!2083052967 &8149927680317532881
+--- !u!114 &2402993402779841024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704924785507297082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5170f1ff0d2ae9e449aec6caf9201f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionCollisionVFX: {fileID: 8635036910112931741, guid: 411af8bb4dbca4845992a49f049281fc,
+    type: 3}
+  explosionSelfDestructVFX: {fileID: 5913764961536442690, guid: 84ab1b4ce7c083e46b8a9e01227f671b,
+    type: 3}
+  visualEffects:
+  - {fileID: 5913764961536442688, guid: 84ab1b4ce7c083e46b8a9e01227f671b, type: 3}
+  - {fileID: 1336926575178671224, guid: 411af8bb4dbca4845992a49f049281fc, type: 3}
+  missileModel: {fileID: 8483100912533896159}
+--- !u!2083052967 &5749708861155306441
 VisualEffect:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,7 +112,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5704924785507297082}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: cffc1fcc979ed7c4c8057694e8d21ad5, type: 3}
+  m_Asset: {fileID: 0}
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_PropertySheet:
@@ -117,20 +138,7 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array: []
---- !u!114 &2402993402779841024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5704924785507297082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5170f1ff0d2ae9e449aec6caf9201f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  missileModel: {fileID: 8483100912533896159}
---- !u!73398921 &3541231405879362960
+--- !u!73398921 &1685529446717472747
 VFXRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,10 +154,7 @@ VFXRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -170,6 +175,21 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4205004097504768932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704924785507297082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdafc37f32b176349b1684c4455b98e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ExecuteInEditor: 1
+  m_Bindings: []
+  m_VisualEffect: {fileID: 0}
 --- !u!1 &6707526653788948330
 GameObject:
   m_ObjectHideFlags: 0
