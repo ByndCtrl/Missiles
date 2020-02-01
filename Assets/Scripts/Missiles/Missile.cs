@@ -15,6 +15,7 @@ public class Missile : MonoBehaviour
     private Vector2 selfDestructTimeMinMax = new Vector2(10, 20f);
     private float selfDestructTime = 0f;
 
+    private VisualEffect trail;
     private GameObject explosionCollisionVFX = null;
     private GameObject explosionSelfDestructVFX = null;
 
@@ -30,12 +31,8 @@ public class Missile : MonoBehaviour
         missileController = FindObjectOfType<MissileController>();   
         missileRigidbody = GetComponent<Rigidbody2D>();
         missileCollider = GetComponent<BoxCollider2D>();
+        trail = GetComponent<VisualEffect>();
         selfDestructTime = Random.Range(selfDestructTimeMinMax.x, selfDestructTimeMinMax.y);
-    }
-
-    private void Start()
-    {
-        
     }
 
     private void FixedUpdate()
@@ -47,11 +44,13 @@ public class Missile : MonoBehaviour
     {
         missileController.activeMissiles.Add(this);
         InitMissile();
+        trail.Play();
     }
 
     private void OnDisable()
     {
         missileController.activeMissiles.Remove(this);
+        trail.Stop();
     }
 
     private void MissileMovement()
@@ -100,6 +99,7 @@ public class Missile : MonoBehaviour
         CameraShake.CameraImpulse(0.25f); // Camera shake
         missileModel.SetActive(false); // Deactive the missile model
         missileCollider.enabled = false; // Disable the missile collider
+        trail.Stop();
         yield return new WaitForSeconds(0.75f); // Wait for the VFX to play out
         gameObject.SetActive(false); // Deactive the entire missile object
         missileModel.SetActive(true); // Activate model before returning to pool
@@ -115,6 +115,7 @@ public class Missile : MonoBehaviour
         explosionSelfDestructVFX.GetComponent<VisualEffect>().Play(); // Play VFX
         missileModel.SetActive(false); // Deactive the missile model
         missileCollider.enabled = false; // Disable the missile collider
+        trail.Stop();
         yield return new WaitForSeconds(0.75f); // Wait for the VFX to play out
         gameObject.SetActive(false); // Deactive the entire missile object
         missileModel.SetActive(true); // Activate model before returning to pool

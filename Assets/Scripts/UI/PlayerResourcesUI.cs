@@ -20,11 +20,6 @@ public class PlayerResourcesUI : MonoBehaviour
     [SerializeField] private Image shieldBar = null;
     [SerializeField] private Image energyBar = null;
 
-    // Holding current fill values of resource bars
-    private float currentHealthFill = 0;
-    private float currentShieldFill = 0;
-    private float currentEnergyFill = 0;
-
     [Header("Smoothing")]
     [Tooltip("Lerp speed for resource bars.")]
     [SerializeField] private float smoothValue = 0;
@@ -65,20 +60,17 @@ public class PlayerResourcesUI : MonoBehaviour
 
     void OnHealthChange()
     {
-        healthText.text = "Health: " + playerResources.Health + " | " + playerResources.MaxHealth;
-        //healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, playerStats.Health / playerStats.MaxHealth, Time.deltaTime * smoothValue);
+        healthText.text = "Health: " + System.Math.Round(playerResources.Health) + " | " + playerResources.MaxHealth;
     }
 
     void OnShieldChange()
     {
-        shieldText.text = "Shield: " + playerResources.Shield + " | " + playerResources.MaxShield;
-        //shieldBar.fillAmount = Mathf.Lerp(shieldBar.fillAmount, playerStats.Shield / playerStats.MaxShield, Time.deltaTime * smoothValue);
+        shieldText.text = "Shield: " + System.Math.Round(playerResources.Shield) + " | " + playerResources.MaxShield;
     }
 
     void OnEnergyChange()
     {
-        energyText.text = "Energy: " + playerResources.Energy + " | " + playerResources.MaxEnergy;
-        //energyBar.fillAmount = Mathf.Lerp(energyBar.fillAmount, playerStats.Energy / playerStats.MaxEnergy, Time.deltaTime * smoothValue);
+        energyText.text = "Energy: " + System.Math.Round(playerResources.Energy) + " | " + playerResources.MaxEnergy;
     }
 
     private void UpdateResourceBars()

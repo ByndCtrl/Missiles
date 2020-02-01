@@ -120,6 +120,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &32244756 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3282791687169528537, guid: 65b5ddf5d0d1e6645a55eeebdb36abea,
+    type: 3}
+  m_PrefabInstance: {fileID: 7215581331913327706}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &32244762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32244756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1673a11881222134fa7ac29a9867a920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &67744678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,7 +1230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 2
+  m_AmplitudeGain: 0
   m_FrequencyGain: 0.5
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1001 &1145790471
@@ -2010,9 +2028,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4bb645a5f3d6d44685bbd6d6ddf81f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missileMovementSpeedMinMax: {x: 75, y: 150}
-  missileRotationSpeedMinMax: {x: 75, y: 150}
-  missileDamageMinMax: {x: 5, y: 25}
+  missileMovementSpeedMinMax: {x: 100, y: 150}
+  missileRotationSpeedMinMax: {x: 100, y: 150}
+  missileDamageMinMax: {x: 25, y: 25}
   activeMissiles: []
 --- !u!114 &1815504353
 MonoBehaviour:
@@ -2043,7 +2061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a485a4fa1fe6ba547921bb9abd85ab1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfSpawners: 5
+  amountOfSpawners: 8
   missileSpawnerPrefab: {fileID: 6673132905108591734, guid: 94c5993449cec8e488a4ef9957b9fb38,
     type: 3}
   radius: 175
@@ -2052,7 +2070,7 @@ MonoBehaviour:
   zScale: 0
   spawnAmountRapidfireMinMax: {x: 4, y: 16}
   rapidfireDelayMinMax: {x: 1, y: 0.16}
-  spawnAmountPerWaveMinMax: {x: 2, y: 8}
+  spawnAmountPerWaveMinMax: {x: 4, y: 16}
   waveAmountMinMax: {x: 2, y: 4}
   waveDelayMinMax: {x: 4, y: 1}
 --- !u!4 &1815504355
@@ -2459,6 +2477,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7380183879218015972, guid: 65b5ddf5d0d1e6645a55eeebdb36abea,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 7380183879218015972, guid: 65b5ddf5d0d1e6645a55eeebdb36abea,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.9997225
+      objectReference: {fileID: 0}
+    - target: {fileID: 7380183879218015972, guid: 65b5ddf5d0d1e6645a55eeebdb36abea,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.023559835
+      objectReference: {fileID: 0}
+    - target: {fileID: 7380183879218015972, guid: 65b5ddf5d0d1e6645a55eeebdb36abea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -177.3
+      objectReference: {fileID: 0}
     - target: {fileID: 8909573174828588413, guid: 65b5ddf5d0d1e6645a55eeebdb36abea,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2513,6 +2551,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072335038247663091, guid: 65b5ddf5d0d1e6645a55eeebdb36abea,
+        type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072335038247663091, guid: 65b5ddf5d0d1e6645a55eeebdb36abea,
+        type: 3}
+      propertyPath: m_Range
+      value: 49.36
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b5ddf5d0d1e6645a55eeebdb36abea, type: 3}
