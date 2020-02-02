@@ -34,7 +34,7 @@ public class BasicPlayerController : MonoBehaviour
         Movement();
         Boost();
         InterpolateMovement();
-        Debug.Log("[BasicPlayerController] Current movement speed: " + currentMovementSpeed + ".");
+        //Debug.Log("[BasicPlayerController] Current movement speed: " + currentMovementSpeed + ".");
     }
 
     private void Boost()
