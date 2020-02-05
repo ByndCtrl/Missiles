@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Player/Stats", fileName = "Stats")]
-public class PlayerStatsData : ScriptableObject
+[CreateAssetMenu(menuName = "Character/Stats", fileName = "Stats")]
+public class CharacterStatsData : ScriptableObject
 {
     [SerializeField] private int movementSpeed = 0;
     [SerializeField] private int rotationSpeed = 0;

@@ -16,10 +16,10 @@ public class CharacterSpawn : MonoBehaviour
     private void Start()
     {
         if (PersistentCharacterData.Characters[PersistentCharacterData.CharacterSelectionIndex]
-          .characterData.CharacterModel != null)
+          .characterGeneralData.CharacterModel != null)
         {
             GameObject playerCharacter = Instantiate(PersistentCharacterData.Characters[PersistentCharacterData.CharacterSelectionIndex]
-          .characterData.CharacterModel, transform.position, Quaternion.identity);
+          .characterGeneralData.CharacterModel, transform.position, Quaternion.identity);
             playerCharacter.transform.SetParent(playerModelTransform);
             playerCharacter.transform.eulerAngles = new Vector3(xRot, yRot, zRot);
         }

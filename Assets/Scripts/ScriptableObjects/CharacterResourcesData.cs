@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Player/Resources", fileName = "Resources")]
-public class PlayerResourcesData : ScriptableObject
+[CreateAssetMenu(menuName = "Character/Resources", fileName = "Resources")]
+public class CharacterResourcesData : ScriptableObject
 {
     [SerializeField] private int health = 0;
     [SerializeField] private int shield = 0;
