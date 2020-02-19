@@ -9,7 +9,7 @@ public class OrbitalRotation : MonoBehaviour
 
     private void Awake()
     {
-        Target = FindObjectOfType<Character>().transform;
+        Target = GameObject.FindGameObjectWithTag("CharacterSelection").transform;
     }
 
     private void Update()
