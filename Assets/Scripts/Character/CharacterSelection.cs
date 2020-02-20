@@ -1,75 +1,53 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterSelection : MonoBehaviour
 {
-    public Character[] Characters;
-    [HideInInspector] public int CharacterSelectionIndex = 0;
+    public GameObject[] Characters = null;
+    public int SelectionIndex = 0;
 
-    private Vector3 spawnPoint = new Vector3(0, 5, 0);
+    private Vector3 spawnPosition = new Vector3(0, 5, 0);
 
     private void Awake()
     {
-        foreach (Character character in Characters)
+        for (int i = 0; i < Characters.Length; i++)
         {
-            Instantiate(character, spawnPoint, Quaternion.identity);
-            character.gameObject.SetActive(false);
+            Instantiate(Characters[i], spawnPosition, Quaternion.identity);
         }
 
-        Characters[0].gameObject.SetActive(true);
+        Characters = GameObject.FindGameObjectsWithTag("Character");
+
+        foreach (GameObject character in Characters)
+        {
+            character.SetActive(false);
+            character.gameObject.name = character.GetComponent<Character>().characterGeneralData.CharacterName;
+        }
+
+        Characters[0].SetActive(true);
     }
 
     public void NextCharacter()
     {
-        CharacterSelectionIndex--;
+        Characters[SelectionIndex].SetActive(false);
 
-        if (CharacterSelectionIndex < 0)
+        SelectionIndex++;
+        if (SelectionIndex == Characters.Length)
         {
-            CharacterSelectionIndex = Characters.Length - 1;
+            SelectionIndex = 0;
         }
 
-        SwitchCharacter(CharacterSelectionIndex);
-        Debug.Log(CharacterSelectionIndex);
+        Characters[SelectionIndex].SetActive(true);
     }
 
     public void PreviousCharacter()
     {
-        CharacterSelectionIndex++;
+        Characters[SelectionIndex].SetActive(false);
 
-        if (CharacterSelectionIndex == Characters.Length)
+        SelectionIndex--;
+        if (SelectionIndex < 0)
         {
-            CharacterSelectionIndex = 0;
+            SelectionIndex = Characters.Length - 1;
         }
 
-        SwitchCharacter(CharacterSelectionIndex);
-        Debug.Log(CharacterSelectionIndex);
-    }
-
-    public void SelectCharacter()
-    {
-        PersistentCharacterData.CharacterSelectionIndex = CharacterSelectionIndex;
-    }
-
-    private void DisableCharacters()
-    {
-        for (int i = 0; i < Characters.Length; i++)
-        {
-            if (Characters[i].gameObject.activeSelf)
-            {
-                Characters[i].gameObject.SetActive(false);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Called when cycling between characters.
-    /// Makes sure only the currently selected character is active.
-    /// </summary>
-    /// <param name="index"></param>
-    public void SwitchCharacter(int index)
-    {
-        DisableCharacters();
-        Characters[index].gameObject.SetActive(true);
+        Characters[SelectionIndex].SetActive(true);
     }
 }

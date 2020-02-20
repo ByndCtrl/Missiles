@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf6e0314c94cbd418cfa377c9ee004e, type: 3}
   m_Name: Scout - Resources
   m_EditorClassIdentifier: 
-  health: 0
-  shield: 0
-  energy: 0
+  health: 50
+  shield: 50
+  energy: 50

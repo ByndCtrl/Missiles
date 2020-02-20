@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14273931dcdedf04e84c8826ac862c77, type: 3}
   m_Name: Scout - General
   m_EditorClassIdentifier: 
-  characterName: 
+  characterName: Scout
   characterPrice: 0
-  characterModel: {fileID: 0}
+  characterModel: {fileID: 3766965354404661011, guid: eb22a1feceec62a48a4f8b9421cc0424,
+    type: 3}

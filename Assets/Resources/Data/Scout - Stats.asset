@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16cbe197d2dabd54e8ec1821ce7709d2, type: 3}
   m_Name: Scout - Stats
   m_EditorClassIdentifier: 
-  movementSpeed: 0
-  rotationSpeed: 0
+  movementSpeed: 75
+  rotationSpeed: 75
