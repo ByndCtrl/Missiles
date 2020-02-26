@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14273931dcdedf04e84c8826ac862c77, type: 3}
-  m_Name: Scout - General
+  m_Name: Lancer - General
   m_EditorClassIdentifier: 
-  characterName: Scout
-  characterPrice: 0
-  characterModel: {fileID: 264643186201129172, guid: e6c1f7a12d3d4fe499d9794cc8de6747,
+  characterName: Lancer
+  characterPrice: 50
+  characterModel: {fileID: 5487596288072770183, guid: 2506ef2b9dfecf0458f6cca78a4ed70c,
     type: 3}

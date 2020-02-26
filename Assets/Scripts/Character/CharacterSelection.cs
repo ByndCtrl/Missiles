@@ -1,53 +1,61 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class CharacterSelection : MonoBehaviour
 {
-    public GameObject[] Characters = null;
+    public List<Character> Characters = new List<Character>();
+    public List<GameObject> CharacterModels = new List<GameObject>();
     public int SelectionIndex = 0;
 
     private Vector3 spawnPosition = new Vector3(0, 5, 0);
 
     private void Awake()
     {
-        for (int i = 0; i < Characters.Length; i++)
+        for (int i = 0; i < Characters.Count; i++)
         {
-            Instantiate(Characters[i], spawnPosition, Quaternion.identity);
+            GameObject character = Instantiate(Characters[i].characterGeneralData.CharacterModel, spawnPosition, Quaternion.identity);
+            character.SetActive(false);
+            CharacterModels.Add(character);
         }
 
-        Characters = GameObject.FindGameObjectsWithTag("Character");
-
-        foreach (GameObject character in Characters)
+        foreach (Character character in Characters)
         {
-            character.SetActive(false);
+            character.gameObject.SetActive(false);
             character.gameObject.name = character.GetComponent<Character>().characterGeneralData.CharacterName;
         }
 
-        Characters[0].SetActive(true);
+        CharacterModels[0].gameObject.SetActive(true);
     }
 
     public void NextCharacter()
     {
-        Characters[SelectionIndex].SetActive(false);
+        CharacterModels[SelectionIndex].gameObject.SetActive(false);
 
         SelectionIndex++;
-        if (SelectionIndex == Characters.Length)
+        if (SelectionIndex == Characters.Count)
         {
             SelectionIndex = 0;
         }
 
-        Characters[SelectionIndex].SetActive(true);
+        CharacterModels[SelectionIndex].gameObject.SetActive(true);
     }
 
     public void PreviousCharacter()
     {
-        Characters[SelectionIndex].SetActive(false);
+        CharacterModels[SelectionIndex].gameObject.SetActive(false);
 
         SelectionIndex--;
         if (SelectionIndex < 0)
         {
-            SelectionIndex = Characters.Length - 1;
+            SelectionIndex = Characters.Count - 1;
         }
 
-        Characters[SelectionIndex].SetActive(true);
+        CharacterModels[SelectionIndex].gameObject.SetActive(true);
+    }
+
+    private void OnDestroy()
+    {
+        Characters.Clear();
+        CharacterModels.Clear();
     }
 }
