@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class CharacterSelectionUI : MonoBehaviour
 {
     private CharacterSelection characterSelection;
     private List<Character> characters = null;
-    private int selectionIndex = 0;
 
     public TextMeshProUGUI Name;
     public TextMeshProUGUI MovementSpeedText;
@@ -16,15 +15,14 @@ public class CharacterSelectionUI : MonoBehaviour
     public TextMeshProUGUI ShieldText;
     public TextMeshProUGUI EnergyText;
 
+    public Button selectButton;
+    public Button buyButton;
+
     private void Awake()
     {
         characterSelection = FindObjectOfType<CharacterSelection>();
         characters = characterSelection.Characters;
 
-        foreach (Character character in characters)
-        {
-            character.GetComponent<Character>();
-        }
     }
 
     private void Start()
@@ -32,14 +30,25 @@ public class CharacterSelectionUI : MonoBehaviour
         UpdateUI();
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
-        Name.text = characters[selectionIndex].characterGeneralData.name;
-        MovementSpeedText.text = characters[selectionIndex].characterStatsData.MovementSpeed.ToString();
-        RotationSpeedText.text = characters[selectionIndex].characterStatsData.RotationSpeed.ToString();
-        HealthText.text = characters[selectionIndex].characterResourcesData.Health.ToString();
-        ShieldText.text = characters[selectionIndex].characterResourcesData.Shield.ToString();
-        EnergyText.text = characters[selectionIndex].characterResourcesData.Energy.ToString();
+        Name.text = characters[characterSelection.SelectionIndex].characterGeneralData.CharacterName;
+        MovementSpeedText.text = characters[characterSelection.SelectionIndex].characterStatsData.MovementSpeed.ToString();
+        RotationSpeedText.text = characters[characterSelection.SelectionIndex].characterStatsData.RotationSpeed.ToString();
+        HealthText.text = characters[characterSelection.SelectionIndex].characterResourcesData.Health.ToString();
+        ShieldText.text = characters[characterSelection.SelectionIndex].characterResourcesData.Shield.ToString();
+        EnergyText.text = characters[characterSelection.SelectionIndex].characterResourcesData.Energy.ToString();
+
+        if (!characters[characterSelection.SelectionIndex].isCharacterOwned)
+        {
+            selectButton.gameObject.SetActive(false);
+            buyButton.gameObject.SetActive(true);
+        } 
+        else
+        {
+            selectButton.gameObject.SetActive(true);
+            buyButton.gameObject.SetActive(false);
+        }
     }
 
 }

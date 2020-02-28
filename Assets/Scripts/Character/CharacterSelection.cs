@@ -9,19 +9,27 @@ public class CharacterSelection : MonoBehaviour
 
     private Vector3 spawnPosition = new Vector3(0, 5, 0);
 
+    private CharacterSelectionUI selectionUI = null;
+
     private void Awake()
+    {
+        selectionUI = FindObjectOfType<CharacterSelectionUI>();
+    }
+
+    private void Start()
     {
         for (int i = 0; i < Characters.Count; i++)
         {
             GameObject character = Instantiate(Characters[i].characterGeneralData.CharacterModel, spawnPosition, Quaternion.identity);
+            character.gameObject.name = Characters[i].characterGeneralData.CharacterName;
             character.SetActive(false);
+
             CharacterModels.Add(character);
         }
 
         foreach (Character character in Characters)
         {
-            character.gameObject.SetActive(false);
-            character.gameObject.name = character.GetComponent<Character>().characterGeneralData.CharacterName;
+            character.gameObject.SetActive(false); 
         }
 
         CharacterModels[0].gameObject.SetActive(true);
@@ -38,6 +46,8 @@ public class CharacterSelection : MonoBehaviour
         }
 
         CharacterModels[SelectionIndex].gameObject.SetActive(true);
+
+        selectionUI.UpdateUI();
     }
 
     public void PreviousCharacter()
@@ -51,6 +61,8 @@ public class CharacterSelection : MonoBehaviour
         }
 
         CharacterModels[SelectionIndex].gameObject.SetActive(true);
+
+        selectionUI.UpdateUI();
     }
 
     private void OnDestroy()
