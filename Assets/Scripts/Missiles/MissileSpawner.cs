@@ -60,7 +60,6 @@ public class MissileSpawner : MonoBehaviour
 
     IEnumerator RapidfireState()
     {
-        Debug.Log(currentSpawnState.ToString());
         yield return new WaitForSeconds(initialSpawnDelay);
 
         for (int missileSpawnIndex = 0; missileSpawnIndex < spawnAmountRapidfire; missileSpawnIndex++)
@@ -79,7 +78,6 @@ public class MissileSpawner : MonoBehaviour
 
     IEnumerator WaveState()
     {
-        Debug.Log(currentSpawnState.ToString());
         yield return new WaitForSeconds(initialSpawnDelay);
 
         for (int i = 0; i < waveAmount; i++)

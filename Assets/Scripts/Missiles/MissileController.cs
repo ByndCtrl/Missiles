@@ -5,8 +5,8 @@ using UnityEngine;
 public class MissileController : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private Vector2 missileMovementSpeedMinMax = new Vector2(75f, 150f);
-    [SerializeField] private Vector2 missileRotationSpeedMinMax = new Vector2(50f, 100f);
+    public Vector2 missileMovementSpeedMinMax = new Vector2(75f, 150f);
+    public Vector2 missileRotationSpeedMinMax = new Vector2(50f, 100f);
     private float missileMovementSpeed = 50f;
     private float missileRotationSpeed = 50f;
 
@@ -14,12 +14,14 @@ public class MissileController : MonoBehaviour
     [SerializeField] private Vector2 missileDamageMinMax = new Vector2(5, 25);
     private float missileDamage = 25f;
 
-    private Transform missileTarget = null;
+    private Transform playerTransform = null;
+    public List<Transform> Targets = new List<Transform>();
+
     [HideInInspector] public List<Missile> activeMissiles = null;
 
     private void Awake()
     {
-        missileTarget = GameObject.FindGameObjectWithTag("Player").transform;
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         activeMissiles = new List<Missile>();
     }
 
@@ -48,9 +50,14 @@ public class MissileController : MonoBehaviour
         return missileDamage;
     }
 
+    public Transform PlayerTransform()
+    {
+        return playerTransform;
+    }
+
     public Transform MissileTarget()
     {
-        return missileTarget;
+        return Targets[Random.Range(0, Targets.Count)];
     }
 
     public void DestroyAllMissiles()
@@ -59,5 +66,11 @@ public class MissileController : MonoBehaviour
         {
             MissilePool.Instance.AddToMissilePool(activeMissiles[i].gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        DestroyAllMissiles();
+        Targets.Clear();
     }
 }

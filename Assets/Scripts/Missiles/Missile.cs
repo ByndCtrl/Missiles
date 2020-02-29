@@ -19,6 +19,10 @@ public class Missile : MonoBehaviour
     private GameObject explosionCollisionVFX = null;
     private GameObject explosionSelfDestructVFX = null;
 
+    private float rubberbandDistance = 150f;
+
+    private PlayerResources playerResources = null;
+
     /// <summary>
     /// missileModel is the 2nd child of the main Missile object, assign the model through prefab inspector
     /// disabling the model alone allows the VFX to play on impact without deactivating the entire object
@@ -28,7 +32,8 @@ public class Missile : MonoBehaviour
 
     private void Awake()
     {
-        missileController = FindObjectOfType<MissileController>();   
+        missileController = FindObjectOfType<MissileController>();
+        playerResources = FindObjectOfType<PlayerResources>();
         missileRigidbody = GetComponent<Rigidbody2D>();
         missileCollider = GetComponent<BoxCollider2D>();
         trail = GetComponent<VisualEffect>();
@@ -37,6 +42,7 @@ public class Missile : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Rubberbanding();
         MissileMovement();
     }
 
@@ -64,6 +70,25 @@ public class Missile : MonoBehaviour
         missileRigidbody.velocity = transform.up * missileMovementSpeed;
     }
 
+    private void Rubberbanding()
+    {
+        if (missileTarget != null)
+        {
+            float distanceToTarget = Vector3.Distance(missileTarget.position, transform.position);
+
+            if (distanceToTarget > rubberbandDistance)
+            {
+                missileMovementSpeed = missileController.missileMovementSpeedMinMax.y * 2;
+                missileRotationSpeed = missileController.missileRotationSpeedMinMax.y * 2;
+            }
+            else
+            {
+                missileMovementSpeed = missileController.MissileMovementSpeed();
+                missileRotationSpeed = missileController.MissileRotationSpeed();
+            }
+        }
+    }
+
     private void InitMissile()
     {
         missileMovementSpeed = missileController.MissileMovementSpeed();
@@ -75,10 +100,16 @@ public class Missile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.tag == "Target")
+        {
+            missileMovementSpeed = missileController.MissileMovementSpeed();
+            missileTarget = missileController.PlayerTransform();
+        }
+
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("Collided with " + other.gameObject.name + ".");
-            other.gameObject.GetComponent<PlayerResources>().TakeDamage(missileDamage);
+            //other.gameObject.GetComponent<PlayerResources>().TakeDamage(missileDamage);
+            playerResources.TakeDamage(missileDamage);
             StartCoroutine(OnMissileCollision());
         }
     }

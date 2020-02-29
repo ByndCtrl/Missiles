@@ -7,6 +7,7 @@ TagManager:
   - Character
   - CharacterModel
   - CharacterSelection
+  - Target
   layers:
   - Default
   - TransparentFX

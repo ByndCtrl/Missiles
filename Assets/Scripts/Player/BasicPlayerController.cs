@@ -42,7 +42,6 @@ public class BasicPlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             currentMovementSpeed = Mathf.Lerp(baseMovementSpeed, maxMovementSpeed, boostStep * Time.deltaTime);
-            
         }
     }
 
