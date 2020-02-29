@@ -5,39 +5,39 @@ using TMPro;
 
 public class ScoreController : MonoBehaviour
 {
-    public ScoreController Instance;
-
-    public static int Score;
-    public static int HighScore;
-    public static float TimeSurvived;
-    public static float MaxTimeSurvived;
+    public int Score = 0;
+    public int HighScore = 0;
+    public float TimeSurvived = 0;
+    public float MaxTimeSurvived = 0;
     
-    private float timeSinceGameStart;
+    private float timeSinceGameStart = 0;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+
     }
 
-    public static void AddScore(int scoreToAdd)
+    private void Start()
+    {
+        timeSinceGameStart += Time.deltaTime;
+    }
+
+    public void AddScore(int scoreToAdd)
     {
         Score += scoreToAdd;
     }
 
-    public static void SubtractScore(int scoreToSubtract)
+    public void SubtractScore(int scoreToSubtract)
     {
         Score -= scoreToSubtract;
     }
 
-    public static void ResetScore()
+    public void ResetScore()
     {
         Score = 0;
     }
 
-    public static void ResetTimeSurvived()
+    public void ResetTimeSurvived()
     {
         TimeSurvived = 0;
         MaxTimeSurvived = 0;
