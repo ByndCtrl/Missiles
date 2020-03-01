@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AudioController : MonoBehaviour
+public class AudioController : Singleton<AudioController>
 {
     public AudioSource sfxSource;
     public AudioSource sfxLoopSource;
@@ -8,13 +8,6 @@ public class AudioController : MonoBehaviour
 
     private float lowPitchRange = 0.90f;
     private float highPitchRange = 1.10f;
-
-    public static AudioController Instance = null;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     public void PlaySingle(AudioClip audioClip)
     {

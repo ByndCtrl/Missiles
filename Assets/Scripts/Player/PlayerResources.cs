@@ -18,8 +18,6 @@ public class PlayerResources : MonoBehaviour
     public float MaxShield { get; private set; } = 200f;
     public float MaxEnergy { get; private set; } = 50f;
 
-    
-
     /// <summary>
     /// Events to update PlayerResourcesUI.cs
     /// Avoiding UI changes in Update()
@@ -42,6 +40,11 @@ public class PlayerResources : MonoBehaviour
     private Coroutine pauseShieldRestorationCoroutine = null;
     [SerializeField] private float regenerationDelay = 3f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] hullHitSFX = null;
+    [SerializeField] private AudioClip[] shieldHitSFX = null;
+    [SerializeField] private AudioClip deathSFX = null;
+    
     private void Awake()
     {
         
@@ -82,6 +85,7 @@ public class PlayerResources : MonoBehaviour
         {
             Shield -= amount;
             ShieldChange();
+            AudioController.Instance.PlayRandom(shieldHitSFX);
         }
 
         if (Shield <= 0)
@@ -90,7 +94,7 @@ public class PlayerResources : MonoBehaviour
             ShieldChange();
             Health -= amount;
             HealthChange();
-            
+            AudioController.Instance.PlayRandom(hullHitSFX);
         }
 
         if (Health <= 0)
@@ -98,6 +102,7 @@ public class PlayerResources : MonoBehaviour
             Health = 0;
             HealthChange();
             Debug.Log("Player dead.");
+            AudioController.Instance.PlaySingle(deathSFX);
         }
     }
 
