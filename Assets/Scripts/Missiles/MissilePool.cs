@@ -13,8 +13,8 @@ public class MissilePool : MonoBehaviour
     private Queue<GameObject> availableVFXCollision = new Queue<GameObject>();
 
     private int missileAmount = 64;
-    private int VFXDestroyAmount = 64;
-    private int VFXCollisionAmount = 64;
+    private int destroyVFXAmount = 64;
+    private int collisionVFXAmount = 64;
 
     public static MissilePool Instance { get; private set; }
 
@@ -34,33 +34,33 @@ public class MissilePool : MonoBehaviour
             var instancesToAdd = Instantiate(missile) as GameObject;
             instancesToAdd.transform.SetParent(transform);
             instancesToAdd.gameObject.SetActive(false);
-            AddToMissilePool(instancesToAdd);
+            AddMissileToPool(instancesToAdd);
         }
     }
 
     private void GrowDestroyPool()
     {
-        for (int i = 0; i < VFXDestroyAmount; i++)
+        for (int i = 0; i < destroyVFXAmount; i++)
         {
             var instancesToAdd = Instantiate(VFXDestroy) as GameObject;
             instancesToAdd.transform.SetParent(transform);
             instancesToAdd.gameObject.SetActive(false);
-            AddToVFXDestroyPool(instancesToAdd);
+            AddDestroyVFXToPool(instancesToAdd);
         }
     }
 
     private void GrowCollisionPool()
     {
-        for (int i = 0; i < VFXCollisionAmount; i++)
+        for (int i = 0; i < collisionVFXAmount; i++)
         {
             var instanceToAdd = Instantiate(VFXCollision) as GameObject;
             instanceToAdd.transform.SetParent(transform);
             instanceToAdd.gameObject.SetActive(false);
-            AddToVFXCollisionPool(instanceToAdd);
+            AddCollisionVFXToPool(instanceToAdd);
         }
     }
 
-    public GameObject GetMissileFromPool()
+    public GameObject GetMissile()
     {
         if (availableMissiles.Count == 0)
         {
@@ -72,7 +72,7 @@ public class MissilePool : MonoBehaviour
         return instance;
     }
 
-    public GameObject GetVFXDestroyFromPool()
+    public GameObject GetDestroyVFX()
     {
         if (availableVFXDestroy.Count == 0)
         {
@@ -84,7 +84,7 @@ public class MissilePool : MonoBehaviour
         return instance;
     }
 
-    public GameObject GetVFXCollisionFromPool()
+    public GameObject GetCollisionVFX()
     {
         if (availableVFXCollision.Count == 0)
         {
@@ -96,22 +96,29 @@ public class MissilePool : MonoBehaviour
         return instance;
     }
 
-    public void AddToMissilePool(GameObject instance)
+    public void AddMissileToPool(GameObject instance)
     {
         availableMissiles.Enqueue(instance);
     }
 
-    public void AddToVFXDestroyPool(GameObject instance)
+    public void AddDestroyVFXToPool(GameObject instance)
     {
         instance.GetComponent<VisualEffect>().Stop();
         instance.gameObject.SetActive(false);
         availableVFXDestroy.Enqueue(instance);
     }
 
-    public void AddToVFXCollisionPool(GameObject instance)
+    public void AddCollisionVFXToPool(GameObject instance)
     {
         instance.GetComponent<VisualEffect>().Stop();
         instance.gameObject.SetActive(false);
         availableVFXCollision.Enqueue(instance);
+    }
+
+    private void OnDestroy()
+    {
+        availableMissiles.Clear();
+        availableVFXCollision.Clear();
+        availableVFXDestroy.Clear();
     }
 }

@@ -4,40 +4,46 @@ using UnityEngine.VFX;
 
 public class Missile : MonoBehaviour
 {
-    private MissileController missileController = null;
-    private Transform missileTarget = null;
+    protected Rigidbody2D missileRigidbody = null;
+    protected BoxCollider2D boxCollider = null;
+    protected GameObject model = null;
 
-    private Rigidbody2D missileRigidbody;
-    private float missileMovementSpeed = 25f;
-    private float missileRotationSpeed = 25f;
-    private float missileDamage = 25f;
+    [Header("Missile")]
+    protected float movementSpeed = 25f;
+    protected float rotationSpeed = 25f;
+    protected float damage = 25f;
+    protected float selfDestructTime = 0f;
+    protected float rubberbandDistance = 25f;
+    protected float rubberbandMovementModifier = 1.25f;
 
-    private Vector2 selfDestructTimeMinMax = new Vector2(10, 20f);
-    private float selfDestructTime = 0f;
+    [Header("Target")]
+    protected Transform target = null;
+    protected string targetTag = "Target";
+    protected float distanceToTarget = 0;
 
-    private VisualEffect trail;
-    private GameObject explosionCollisionVFX = null;
-    private GameObject explosionSelfDestructVFX = null;
+    [Header("SFX")]
+    [SerializeField] protected AudioClip[] collisionSFX = null;
+    [SerializeField] protected AudioClip[] destroySFX = null;
 
-    private float rubberbandDistance = 150f;
+    [Header("VFX")]
+    [SerializeField] protected GameObject collisionVFX = null;
+    [SerializeField] protected GameObject destroyVFX = null;
+
+    [Header("Debug")]
+    [SerializeField, Tooltip("Color of the line to the target.")]
+    protected Color lineColor = new Color(255, 0, 155, 1);
 
     private PlayerResources playerResources = null;
-
-    /// <summary>
-    /// missileModel is the 2nd child of the main Missile object, assign the model through prefab inspector
-    /// disabling the model alone allows the VFX to play on impact without deactivating the entire object
-    /// </summary>
-    [SerializeField] private GameObject missileModel = null;
-    private BoxCollider2D missileCollider = null;
+    private MissileController missileController = null;
 
     private void Awake()
     {
+        missileRigidbody = GetComponent<Rigidbody2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
         missileController = FindObjectOfType<MissileController>();
         playerResources = FindObjectOfType<PlayerResources>();
-        missileRigidbody = GetComponent<Rigidbody2D>();
-        missileCollider = GetComponent<BoxCollider2D>();
-        trail = GetComponent<VisualEffect>();
-        selfDestructTime = Random.Range(selfDestructTimeMinMax.x, selfDestructTimeMinMax.y);
+
+        model = this.transform.GetChild(0).gameObject;
     }
 
     private void FixedUpdate()
@@ -50,119 +56,113 @@ public class Missile : MonoBehaviour
     {
         missileController.activeMissiles.Add(this);
         InitMissile();
-        trail.Play();
     }
 
     private void OnDisable()
     {
         missileController.activeMissiles.Remove(this);
-        trail.Stop();
     }
 
     private void MissileMovement()
     {
-        Vector2 movementDirection = (Vector2)missileTarget.position - missileRigidbody.position;
+        Vector2 movementDirection = (Vector2)target.position - missileRigidbody.position;
         movementDirection.Normalize();
 
-        float missileRotation = Vector3.Cross(movementDirection, transform.up).z;
+        float rotation = Vector3.Cross(movementDirection, transform.up).z;
 
-        missileRigidbody.angularVelocity = -missileRotation * missileRotationSpeed;
-        missileRigidbody.velocity = transform.up * missileMovementSpeed;
+        missileRigidbody.angularVelocity = -rotation * rotationSpeed;
+        missileRigidbody.velocity = transform.up * movementSpeed;
     }
 
     private void Rubberbanding()
     {
-        if (missileTarget != null)
+        if (target != null)
         {
-            float distanceToTarget = Vector3.Distance(missileTarget.position, transform.position);
+            distanceToTarget = Vector3.Distance(target.position, transform.position);
 
             if (distanceToTarget > rubberbandDistance)
             {
-                missileMovementSpeed = missileController.missileMovementSpeedMinMax.y * 2;
-                missileRotationSpeed = missileController.missileRotationSpeedMinMax.y * 2;
+                movementSpeed = missileController.MovementSpeed() * missileController.RubberbandMovementModifier();
+                rotationSpeed = missileController.RotationSpeed() * missileController.RubberbandMovementModifier();
             }
             else
             {
-                missileMovementSpeed = missileController.MissileMovementSpeed();
-                missileRotationSpeed = missileController.MissileRotationSpeed();
+                movementSpeed = missileController.MovementSpeed();
+                rotationSpeed = missileController.RotationSpeed();
             }
         }
     }
 
     private void InitMissile()
     {
-        missileMovementSpeed = missileController.MissileMovementSpeed();
-        missileRotationSpeed = missileController.MissileRotationSpeed();
-        missileDamage = missileController.MissileDamage();
-        missileTarget = missileController.MissileTarget();
-        StartCoroutine(SelfDestruct(selfDestructTime));
+        movementSpeed = missileController.MovementSpeed();
+        rotationSpeed = missileController.RotationSpeed();
+        damage = missileController.Damage();
+        target = missileController.MissileTarget();
+        selfDestructTime = missileController.SelfDestructTime();
+        rubberbandDistance = missileController.RubberBandDistance();
+        StartCoroutine(Destroy(selfDestructTime));
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Target")
         {
-            missileMovementSpeed = missileController.MissileMovementSpeed();
-            missileTarget = missileController.PlayerTransform();
+            movementSpeed = missileController.MovementSpeed();
+            target = missileController.PlayerTransform();
         }
 
         if (other.gameObject.tag == "Player")
         {
-            //other.gameObject.GetComponent<PlayerResources>().TakeDamage(missileDamage);
-            playerResources.TakeDamage(missileDamage);
+            playerResources.TakeDamage(damage);
             StartCoroutine(OnMissileCollision());
         }
     }
 
-    private IEnumerator SelfDestruct(float delay)
+    private IEnumerator Destroy(float delay)
     {
         yield return new WaitForSeconds(delay);
-        StartCoroutine(OnMissileSelfDestruct());
+        StartCoroutine(OnMissileDestroy());
     }
-
     
     private IEnumerator OnMissileCollision()
     {
-        explosionCollisionVFX = MissilePool.Instance.GetVFXCollisionFromPool(); // Get VFX instance from object pool
-        explosionCollisionVFX.transform.position = this.transform.position; // Position VFX instance to the missile object
-        explosionCollisionVFX.transform.localRotation = this.transform.localRotation; // Set rotation of VFX instance to be the same as the missile
-        explosionCollisionVFX.GetComponent<VisualEffect>().Play(); // Play VFX
+        collisionVFX = MissilePool.Instance.GetCollisionVFX(); // Get VFX instance from object pool
+        collisionVFX.transform.position = this.transform.position; // Position VFX instance to the missile object
+        collisionVFX.transform.localRotation = this.transform.localRotation; // Set rotation of VFX instance to be the same as the missile
+        collisionVFX.GetComponent<VisualEffect>().Play(); // Play VFX
         CameraShake.CameraImpulse(0.25f); // Camera shake
-        missileModel.SetActive(false); // Deactive the missile model
-        missileCollider.enabled = false; // Disable the missile collider
-        trail.Stop();
+        model.SetActive(false); // Deactive the missile model
+        boxCollider.enabled = false; // Disable the missile collider
         yield return new WaitForSeconds(0.75f); // Wait for the VFX to play out
         gameObject.SetActive(false); // Deactive the entire missile object
-        missileModel.SetActive(true); // Activate model before returning to pool
-        missileCollider.enabled = true; // Enable collider before returning to pool
-        MissilePool.Instance.AddToMissilePool(gameObject); // Return missile to pool
-        MissilePool.Instance.AddToVFXCollisionPool(explosionCollisionVFX); // Return VFX to pool
-        yield return null; // Exit
+        model.SetActive(true); // Activate model before returning to pool
+        boxCollider.enabled = true; // Enable collider before returning to pool
+        MissilePool.Instance.AddMissileToPool(gameObject); // Return missile to pool
+        MissilePool.Instance.AddCollisionVFXToPool(collisionVFX); // Return VFX to pool
     }
-    private IEnumerator OnMissileSelfDestruct()
+    private IEnumerator OnMissileDestroy()
     {
-        explosionSelfDestructVFX = MissilePool.Instance.GetVFXDestroyFromPool(); // Get VFX instance from object pool
-        explosionSelfDestructVFX.transform.position = this.transform.position; // Position VFX instance to the missile object
-        explosionSelfDestructVFX.GetComponent<VisualEffect>().Play(); // Play VFX
-        missileModel.SetActive(false); // Deactive the missile model
-        missileCollider.enabled = false; // Disable the missile collider
-        trail.Stop();
+        destroyVFX = MissilePool.Instance.GetDestroyVFX(); // Get VFX instance from object pool
+        destroyVFX.transform.position = this.transform.position; // Position VFX instance to the missile object
+        destroyVFX.GetComponent<VisualEffect>().Play(); // Play VFX
+        //AudioController.Instance.PlayRandom(explosionSelfDestructSFX);
+        model.SetActive(false); // Deactive the missile model
+        boxCollider.enabled = false; // Disable the missile collider
         yield return new WaitForSeconds(0.75f); // Wait for the VFX to play out
         gameObject.SetActive(false); // Deactive the entire missile object
-        missileModel.SetActive(true); // Activate model before returning to pool
-        missileCollider.enabled = true; // Enable collider before returning to pool
-        MissilePool.Instance.AddToMissilePool(gameObject); // Return missile to pool
-        MissilePool.Instance.AddToVFXDestroyPool(explosionSelfDestructVFX); // Return VFX to pool
-        yield return null; // Exit
+        model.SetActive(true); // Activate model before returning to pool
+        boxCollider.enabled = true; // Enable collider before returning to pool
+        MissilePool.Instance.AddMissileToPool(gameObject); // Return missile to pool
+        MissilePool.Instance.AddDestroyVFXToPool(destroyVFX); // Return VFX to pool
     }
     
-
     private void OnDrawGizmos()
     {
-        if (missileTarget != null)
+        if (target != null)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, missileTarget.position);
+            Gizmos.color = lineColor;
+            Gizmos.DrawLine(transform.position, target.position);
         }
     }
 }

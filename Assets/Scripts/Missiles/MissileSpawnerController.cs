@@ -40,11 +40,6 @@ public class MissileSpawnerController : MonoBehaviour
     {
         InitMissileSpawners();
     }
-    private void FixedUpdate()
-    {
-        //Debug.Log("Current number of missiles per rapidfire: " + spawnAmountRapidfire + ".");
-        //Debug.Log("Current number of missiles per wave: " + spawnAmountPerWave + ".");
-    }
 
     public float RapidfireSpawnAmount()
     {

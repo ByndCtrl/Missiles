@@ -66,10 +66,6 @@ public class PlayerResources : MonoBehaviour
         Health = MaxHealth;
         Shield = MaxShield;
         Energy = MaxEnergy;
-
-        Debug.Log("[PlayerResources] Health: " + Health);
-        Debug.Log("[PlayerResources] Shield: " + Shield);
-        Debug.Log("[PlayerResources] Energy: " + Energy);
     }
 
     public void TakeDamage(float amount)
@@ -85,7 +81,7 @@ public class PlayerResources : MonoBehaviour
         {
             Shield -= amount;
             ShieldChange();
-            AudioController.Instance.PlayRandom(shieldHitSFX);
+            //AudioController.Instance.PlayRandom(shieldHitSFX);
         }
 
         if (Shield <= 0)
@@ -94,7 +90,7 @@ public class PlayerResources : MonoBehaviour
             ShieldChange();
             Health -= amount;
             HealthChange();
-            AudioController.Instance.PlayRandom(hullHitSFX);
+            //AudioController.Instance.PlayRandom(hullHitSFX);
         }
 
         if (Health <= 0)
@@ -102,7 +98,7 @@ public class PlayerResources : MonoBehaviour
             Health = 0;
             HealthChange();
             Debug.Log("Player dead.");
-            AudioController.Instance.PlaySingle(deathSFX);
+            //AudioController.Instance.PlaySingle(deathSFX);
         }
     }
 

@@ -1,21 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MissileController : MonoBehaviour
 {
+    [Header("General")]
+    public Vector2 SelfDestructTimeMinMax = new Vector2(10, 15);
+    private float selfDestructTime = 0f;
+
     [Header("Movement")]
-    public Vector2 missileMovementSpeedMinMax = new Vector2(75f, 150f);
-    public Vector2 missileRotationSpeedMinMax = new Vector2(50f, 100f);
-    private float missileMovementSpeed = 50f;
-    private float missileRotationSpeed = 50f;
+    public Vector2 MovementSpeedMinMax = new Vector2(75f, 150f);
+    public Vector2 RotationSpeedMinMax = new Vector2(50f, 100f);
+    [SerializeField] private float rubberbandDistance = 200f;
+    [SerializeField] private float rubberbandMovementModifier = 1.25f;
 
-    [Header("Stats")]
-    [SerializeField] private Vector2 missileDamageMinMax = new Vector2(5, 25);
-    private float missileDamage = 25f;
+    private float movementSpeed = 50f;
+    private float rotationSpeed = 50f;
 
-    private Transform playerTransform = null;
+    [Header("Damage")]
+    [SerializeField] private Vector2 damageMinMax = new Vector2(5, 25);
+    private float damage = 5f;
+
+    [Header("Targets")]
     public List<Transform> Targets = new List<Transform>();
+    private Transform playerTransform = null;
 
     [HideInInspector] public List<Missile> activeMissiles = null;
 
@@ -25,29 +32,38 @@ public class MissileController : MonoBehaviour
         activeMissiles = new List<Missile>();
     }
 
-    private void FixedUpdate()
+    public float MovementSpeed()
     {
-        //Debug.Log("Active Missiles: " + activeMissiles.Count + ".");
-        //Debug.Log("Current missile movement speed: " + MissileMovementSpeed() + ".");
-        //Debug.Log("Current missile rotation speed: " + MissileRotationSpeed() + ".");
+        movementSpeed = Mathf.Lerp(MovementSpeedMinMax.x, MovementSpeedMinMax.y, Difficulty.GetMissileDifficultyPercent());
+        return movementSpeed;
     }
 
-    public float MissileMovementSpeed()
+    public float RotationSpeed()
     {
-        missileMovementSpeed = Mathf.Lerp(missileMovementSpeedMinMax.x, missileMovementSpeedMinMax.y, Difficulty.GetMissileDifficultyPercent());
-        return missileMovementSpeed;
+        rotationSpeed = Mathf.Lerp(RotationSpeedMinMax.x, RotationSpeedMinMax.y, Difficulty.GetMissileDifficultyPercent());
+        return rotationSpeed;
     }
 
-    public float MissileRotationSpeed()
+    public float RubberBandDistance()
     {
-        missileRotationSpeed = Mathf.Lerp(missileRotationSpeedMinMax.x, missileRotationSpeedMinMax.y, Difficulty.GetMissileDifficultyPercent());
-        return missileRotationSpeed;
+        return rubberbandDistance;
     }
 
-    public float MissileDamage()
+    public float RubberbandMovementModifier()
     {
-        missileDamage = Mathf.Lerp(missileDamageMinMax.x, missileDamageMinMax.y, Difficulty.GetMissileDifficultyPercent());
-        return missileDamage;
+        return rubberbandMovementModifier;
+    }
+
+    public float Damage()
+    {
+        damage = Mathf.Lerp(damageMinMax.x, damageMinMax.y, Difficulty.GetMissileDifficultyPercent());
+        return damage;
+    }
+
+    public float SelfDestructTime()
+    {
+        selfDestructTime = Random.Range(SelfDestructTimeMinMax.x, SelfDestructTimeMinMax.y);
+        return selfDestructTime;
     }
 
     public Transform PlayerTransform()
@@ -64,7 +80,7 @@ public class MissileController : MonoBehaviour
     {
         for (int i = 0; i < activeMissiles.Count; i++)
         {
-            MissilePool.Instance.AddToMissilePool(activeMissiles[i].gameObject);
+            MissilePool.Instance.AddMissileToPool(activeMissiles[i].gameObject);
         }
     }
 
