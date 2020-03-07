@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
+
 
 public class ScoreController : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class ScoreController : MonoBehaviour
     public int HighScore = 0;
     public float TimeSurvived = 0;
     public float MaxTimeSurvived = 0;
+    public float MissilesDestroyed = 0;
     
     private float timeSinceGameStart = 0;
 
@@ -19,7 +22,12 @@ public class ScoreController : MonoBehaviour
 
     private void Start()
     {
-        timeSinceGameStart += Time.deltaTime;
+        timeSinceGameStart = Time.timeSinceLevelLoad;
+    }
+
+    private void Update()
+    {
+        TimeSurvived = Time.time;
     }
 
     public void AddScore(int scoreToAdd)
