@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterSelection : MonoBehaviour
+public class CharacterSelection : Singleton<CharacterSelection>
 {
     public List<Character> Characters = new List<Character>();
     public List<GameObject> CharacterModels = new List<GameObject>();
@@ -13,6 +13,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void Awake()
     {
+        base.Awake();
         selectionUI = FindObjectOfType<CharacterSelectionUI>();
     }
 

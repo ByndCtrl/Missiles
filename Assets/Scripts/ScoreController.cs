@@ -1,24 +1,17 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using TMPro;
 
-
-public class ScoreController : MonoBehaviour
+public class ScoreController : Singleton<ScoreController>
 {
     public int Score = 0;
     public int HighScore = 0;
+    public int MissilesDestroyed = 0;
     public float TimeSurvived = 0;
     public float MaxTimeSurvived = 0;
-    public float MissilesDestroyed = 0;
-    
+
     private float timeSinceGameStart = 0;
 
-    private void Awake()
-    {
-
-    }
+    public event Action ScoreChange;
 
     private void Start()
     {
@@ -30,24 +23,64 @@ public class ScoreController : MonoBehaviour
         TimeSurvived = Time.time;
     }
 
-    public void AddScore(int scoreToAdd)
+    public void AddScore(int scoreAmount)
     {
-        Score += scoreToAdd;
+        Score += scoreAmount;
+
+        if (Score > HighScore)
+        {
+            HighScore = Score;
+        }
+
+        ScoreChange();
     }
 
-    public void SubtractScore(int scoreToSubtract)
+    public void SubtractScore(int scoreAmount)
     {
-        Score -= scoreToSubtract;
+        if (Score > 0)
+        {
+            Score -= scoreAmount;
+
+            if (Score < 0)
+            {
+                Score = 0;
+            }
+        }
+
+        ScoreChange();
+    }
+
+    public void AddMissilesDestroyed(int amount)
+    {
+        MissilesDestroyed += amount;
+
+        ScoreChange();
+    }
+
+    public void SubtractMissilesDestroyed(int amount)
+    {
+        if (MissilesDestroyed > 0)
+        {
+            MissilesDestroyed -= amount;
+        }
+
+        ScoreChange();
     }
 
     public void ResetScore()
     {
         Score = 0;
+        HighScore = 0;
     }
 
     public void ResetTimeSurvived()
     {
         TimeSurvived = 0;
         MaxTimeSurvived = 0;
+    }
+
+    public void ResetMissilesDestroyed()
+    {
+        MissilesDestroyed = 0;
     }
 }

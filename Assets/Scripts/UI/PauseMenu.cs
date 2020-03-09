@@ -14,12 +14,6 @@ public class PauseMenu : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject pauseMenu = null;
-    [SerializeField] private ScoreController scoreController = null;
-
-    private void Awake()
-    { 
-        scoreController = FindObjectOfType<ScoreController>();
-    }
 
     private void Start()
     {
@@ -31,28 +25,23 @@ public class PauseMenu : MonoBehaviour
         UpdatePauseMenu();
     }
 
-    private void Update()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
         {
-            pauseMenu.SetActive(!pauseMenu.activeSelf);
-            if (Time.timeScale == 1)
+            if (pauseMenu.activeSelf)
             {
-                Time.timeScale = 0f;
-            } 
+                pauseMenu.SetActive(false);
+                Time.timeScale = 1f;
+            }
             else
             {
-                Time.timeScale = 1f;
+                pauseMenu.SetActive(true);
+                Time.timeScale = 0f;
             }
         }
 
         UpdatePauseMenu();
-    }
-
-    public void Pause()
-    {
-        pauseMenu.SetActive(true);
-        Time.timeScale = 0f;
     }
 
     public void Quit()
@@ -74,8 +63,11 @@ public class PauseMenu : MonoBehaviour
 
     public void UpdatePauseMenu()
     {
-        timeSurvived.text = scoreController.TimeSurvived.ToString("F2");
-        missilesDestroyed.text = scoreController.MissilesDestroyed.ToString();
-        score.text = scoreController.Score.ToString();
+        if (pauseMenu.activeSelf)
+        {
+            timeSurvived.text = ScoreController.Instance.TimeSurvived.ToString("F2");
+            missilesDestroyed.text = ScoreController.Instance.MissilesDestroyed.ToString();
+            score.text = ScoreController.Instance.Score.ToString();
+        }
     }
 }

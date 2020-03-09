@@ -15,6 +15,7 @@ public class CharacterSpawn : MonoBehaviour
 
     private void Start()
     {
+        /*
         if (PersistentCharacterData.Characters[PersistentCharacterData.CharacterSelectionIndex]
           .characterGeneralData.CharacterModel != null)
         {
@@ -23,5 +24,6 @@ public class CharacterSpawn : MonoBehaviour
             playerCharacter.transform.SetParent(playerModelTransform);
             playerCharacter.transform.eulerAngles = new Vector3(xRot, yRot, zRot);
         }
+        */
     }
 }
