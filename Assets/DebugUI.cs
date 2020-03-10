@@ -42,7 +42,7 @@ public class DebugUI : MonoBehaviour
         highScore.text = "Highscore: " + ScoreController.Instance.HighScore.ToString();
         timeSurvived.text = ScoreController.Instance.TimeSurvived.ToString("F2");
         missilesDestroyed.text = ScoreController.Instance.MissilesDestroyed.ToString();
-        currency.text = CurrencyController.Currency.ToString();
+        currency.text = CurrencyController.Instance.Currency.ToString();
     }
 
     public void DebugSave()
@@ -77,12 +77,12 @@ public class DebugUI : MonoBehaviour
 
     public void DebugAddCurrency(int value)
     {
-        CurrencyController.AddCurrency(value);
+        CurrencyController.Instance.AddCurrency(value);
     }
 
     public void DebugSubtractCurrency(int value)
     {
-        CurrencyController.SubtractCurrency(value);
+        CurrencyController.Instance.SubtractCurrency(value);
     }
 
     public void ResetEverything()
@@ -90,7 +90,7 @@ public class DebugUI : MonoBehaviour
         ScoreController.Instance.ResetScore();
         ScoreController.Instance.ResetTimeSurvived();
         ScoreController.Instance.ResetMissilesDestroyed();
-        CurrencyController.ResetCurrency();
+        CurrencyController.Instance.ResetCurrency();
         CharacterSelection.Instance.SelectionIndex = 0;
     }
 }
